@@ -1,5 +1,5 @@
 {
-  "name": "medusa-admin",
+  "name": "admin",
   "private": true,
   "description": "A proprietary Admin system to manage Medusa Stores",
   "version": "0.1.0",
@@ -53,11 +53,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
-    "@storybook/addon-actions": "^5.3.19",
-    "@storybook/addon-backgrounds": "^5.3.19",
-    "@storybook/addon-links": "^5.3.19",
-    "@storybook/addons": "^5.3.19",
-    "@storybook/react": "^5.3.19",
     "babel-loader": "^8.1.0",
     "prettier": "2.0.5"
   },
