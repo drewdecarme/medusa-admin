@@ -53,10 +53,10 @@
     "rebass": "^4.0.7"
   },
   "devDependencies": {
-    "webpack": "^5.64.4",
     "@babel/core": "^7.10.2",
     "babel-loader": "^8.1.0",
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "webpack": "^5.64.4"
   },
   "scripts": {
     "build": "gatsby build",
