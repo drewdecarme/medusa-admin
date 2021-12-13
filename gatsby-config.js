@@ -4,6 +4,12 @@ module.exports = {
     description: `The best ecommerce software.`,
     author: `@medusajs`,
   },
+  flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+    FAST_REFRESH: true,
+    FAST_DEV: true,
+    DEV_SSR: true,
+  },
   plugins: [
     `gatsby-plugin-react-helmet`,
     //{
@@ -35,4 +41,4 @@ module.exports = {
       options: { prefixes: [`/a/*`] },
     },
   ],
-}
+};

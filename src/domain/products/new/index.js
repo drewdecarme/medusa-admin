@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from "react"
-import styled from "@emotion/styled"
-import _ from "lodash"
-import { useForm } from "react-hook-form"
-import { Text, Flex, Box } from "rebass"
-import { navigate } from "gatsby"
-import Typography from "../../../components/typography"
-import Select from "react-select"
+import styled from "@emotion/styled";
+import { Label } from "@rebass/forms";
+import { navigate } from "gatsby";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Select from "react-select";
+import Creatable from "react-select/creatable";
+import { Box, Flex, Text } from "rebass";
 
-import Button from "../../../components/button"
-import Pill from "../../../components/pill"
-import Input from "../../../components/input"
-import Spinner from "../../../components/spinner"
-import CurrencyInput from "../../../components/currency-input"
-import TagInput from "../../../components/tag-input"
-import ImageUpload from "../../../components/image-upload"
-import TextArea from "../../../components/textarea"
-import VariantGrid from "../../../components/variant-grid"
-
-import Medusa from "../../../services/api"
-import useMedusa from "../../../hooks/use-medusa"
-
-import Creatable from "react-select/creatable"
-
-import { getCombinations } from "./utils/get-combinations"
-import { Label } from "@rebass/forms"
+import Button from "../../../components/button";
+import CurrencyInput from "../../../components/currency-input";
+import ImageUpload from "../../../components/image-upload";
+import Input from "../../../components/input";
+import Pill from "../../../components/pill";
+import Spinner from "../../../components/spinner";
+import TagInput from "../../../components/tag-input";
+import TextArea from "../../../components/textarea";
+import Typography from "../../../components/typography";
+import VariantGrid from "../../../components/variant-grid";
+import useMedusa from "../../../hooks/use-medusa";
+import Medusa from "../../../services/api";
+import { getCombinations } from "./utils/get-combinations";
 
 const StyledSelect = styled(Select)`
   font-size: 14px;
   color: #454545;
-`
+`;
 
 const Cross = styled.span`
   position: absolute;
@@ -36,7 +33,7 @@ const Cross = styled.span`
   right: 0;
   margin-right: 5px;
   cursor: pointer;
-`
+`;
 
 const StyledCreatableSelect = styled(Creatable)`
   font-size: 14px;
@@ -45,20 +42,20 @@ const StyledCreatableSelect = styled(Creatable)`
 .css-yk16xz-control
   box-shadow: none;
 }
-`
+`;
 
 const ImageCardWrapper = styled(Box)`
   position: relative;
   display: inline-block;
   height: 200px;
   width: 200px;
-`
+`;
 
 const StyledImageCard = styled(Box)`
   height: 200px;
   width: 200px;
 
-  border: ${props => (props.selected ? "1px solid #53725D" : "none")};
+  border: ${(props) => (props.selected ? "1px solid #53725D" : "none")};
 
   object-fit: contain;
 
@@ -68,13 +65,13 @@ const StyledImageCard = styled(Box)`
     rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;
 
   border-radius: 3px;
-`
+`;
 
 const StyledImageBox = styled(Flex)`
   flex-wrap: wrap;
   .img-container {
     border: 1px solid black;
-    background-color: ${props => props.theme.colors.light};
+    background-color: ${(props) => props.theme.colors.light};
     height: 50px;
     width: 50px;
 
@@ -90,11 +87,11 @@ const StyledImageBox = styled(Flex)`
       object-fit: contain;
     }
   }
-`
+`;
 
 const RequiredLabel = styled.div`
   ${Typography.Base}
-  ${props =>
+  ${(props) =>
     props.inline
       ? `
   text-align: right;
@@ -108,24 +105,24 @@ const RequiredLabel = styled.div`
     color: rgba(255, 0, 0, 0.5);
     content: " *";
   }
-`
+`;
 
-const NewProduct = ({ }) => {
-  const [hasVariants, setHasVariants] = useState(false)
-  const [variants, setVariants] = useState([])
-  const [options, setOptions] = useState([])
-  const [images, setImages] = useState([])
-  const [prices, setPrices] = useState([])
-  const [type, setSelectedType] = useState(null)
-  const [types, setTypes] = useState([])
-  const [collection, setCollection] = useState(null)
-  const [tags, setTags] = useState([])
-  const [frequentTags, setFrequentTags] = useState([])
-  const [currencyOptions, setCurrencyOptions] = useState([])
-  const { store, isLoading, toaster } = useMedusa("store")
+const NewProduct = ({}) => {
+  const [hasVariants, setHasVariants] = useState(false);
+  const [variants, setVariants] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [images, setImages] = useState([]);
+  const [prices, setPrices] = useState([]);
+  const [type, setSelectedType] = useState(null);
+  const [types, setTypes] = useState([]);
+  const [collection, setCollection] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [frequentTags, setFrequentTags] = useState([]);
+  const [currencyOptions, setCurrencyOptions] = useState([]);
+  const { store, isLoading, toaster } = useMedusa("store");
   const { collections, isLoading: isLoadingCollections } = useMedusa(
     "collections"
-  )
+  );
   const {
     register,
     handleSubmit,
@@ -133,68 +130,68 @@ const NewProduct = ({ }) => {
     setValue,
     errors,
     clearErrors,
-  } = useForm()
+  } = useForm();
 
   const fetchTypes = async () => {
     const productTypes = await Medusa.products
       .listTypes()
-      .then(({ data }) => data.types)
+      .then(({ data }) => data.types);
 
-    setTypes(productTypes)
-  }
+    setTypes(productTypes);
+  };
 
   const fetchTags = async () => {
     const productTags = await Medusa.products
       .listTagsByUsage()
-      .then(({ data }) => data.tags)
+      .then(({ data }) => data.tags);
 
-    setFrequentTags(productTags)
-  }
+    setFrequentTags(productTags);
+  };
 
   /**
    * Will be called everytime an option has changed. It will then recalculate
    * the combinations of variants that may exist.
    */
   useEffect(() => {
-    const os = [...options]
-    const combinations = getCombinations(os)
+    const os = [...options];
+    const combinations = getCombinations(os);
 
-    const newVariants = combinations.map(optionValues => {
+    const newVariants = combinations.map((optionValues) => {
       if (!optionValues) {
-        return null
+        return null;
       }
 
-      const existing = variants.find(v =>
+      const existing = variants.find((v) =>
         v.options.every((value, index) => optionValues[index] === value)
-      ) || { prices: [] }
+      ) || { prices: [] };
 
-      existing.options = optionValues.filter(v => v !== "")
+      existing.options = optionValues.filter((v) => v !== "");
 
-      return existing
-    })
+      return existing;
+    });
 
-    setVariants(newVariants.filter(v => !!v))
-  }, [options])
+    setVariants(newVariants.filter((v) => !!v));
+  }, [options]);
 
   const getCurrencyOptions = () => {
     return ((store && store.currencies) || [])
-      .map(v => ({
+      .map((v) => ({
         value: v.code.toUpperCase(),
         label: v.code.toUpperCase(),
       }))
       .filter(
-        o =>
+        (o) =>
           !prices.find(
-            p =>
+            (p) =>
               !p.edit && p.currency_code.toUpperCase() === o.value.toUpperCase()
           )
-      )
-  }
+      );
+  };
 
   useEffect(() => {
-    fetchTags()
-    fetchTypes()
-  }, [])
+    fetchTags();
+    fetchTypes();
+  }, []);
 
   /**
    * Determines the currency options.
@@ -209,30 +206,30 @@ const NewProduct = ({ }) => {
           sale_amount: "",
           edit: false,
         },
-      ])
+      ]);
     }
 
-    setCurrencyOptions(getCurrencyOptions())
-  }, [store, isLoading, prices])
+    setCurrencyOptions(getCurrencyOptions());
+  }, [store, isLoading, prices]);
 
   const handlePriceChange = (index, e) => {
-    const element = e.target
-    const value = element.value
+    const element = e.target;
+    const value = element.value;
 
-    const newPrices = [...prices]
+    const newPrices = [...prices];
     newPrices[index] = {
       ...newPrices[index],
       amount: value,
-    }
+    };
 
-    setPrices(newPrices)
-  }
+    setPrices(newPrices);
+  };
 
-  const removePrice = index => {
-    const newPrices = [...prices]
-    newPrices.splice(index, 1)
-    setPrices(newPrices)
-  }
+  const removePrice = (index) => {
+    const newPrices = [...prices];
+    newPrices.splice(index, 1);
+    setPrices(newPrices);
+  };
 
   const addPrice = () => {
     const newPrices = [
@@ -244,72 +241,72 @@ const NewProduct = ({ }) => {
         amount: "",
         sale_amount: "",
       },
-    ]
+    ];
 
-    setPrices(newPrices)
-  }
+    setPrices(newPrices);
+  };
 
   const handleCurrencySelected = (index, currency) => {
-    const newPrices = [...prices]
+    const newPrices = [...prices];
 
     const newPrice = {
       ...newPrices[index],
       currency_code: currency,
-    }
+    };
 
-    newPrices[index] = newPrice
+    newPrices[index] = newPrice;
 
-    setPrices(newPrices)
-  }
+    setPrices(newPrices);
+  };
 
   /**
    * Updates one of the values in a option.
    */
   const updateOptionValue = (index, values) => {
-    const newOptions = [...options]
+    const newOptions = [...options];
     newOptions[index] = {
       ...newOptions[index],
       values,
-    }
+    };
 
-    setValue(`options[${index}].values`, values)
-    setOptions(newOptions)
-  }
+    setValue(`options[${index}].values`, values);
+    setOptions(newOptions);
+  };
 
   const updateOptionName = (e, index) => {
-    const element = e.target
-    const newOptions = [...options]
+    const element = e.target;
+    const newOptions = [...options];
     newOptions[index] = {
       ...newOptions[index],
       name: element.value,
-    }
+    };
 
-    setValue(`options[${index}].name`, element.value)
-    setOptions(newOptions)
-  }
+    setValue(`options[${index}].name`, element.value);
+    setOptions(newOptions);
+  };
 
-  const handleRemoveOption = index => {
-    const newOptions = [...options]
-    newOptions.splice(index, 1)
-    setOptions(newOptions)
-  }
+  const handleRemoveOption = (index) => {
+    const newOptions = [...options];
+    newOptions.splice(index, 1);
+    setOptions(newOptions);
+  };
 
-  const handleAddOption = e => {
+  const handleAddOption = (e) => {
     setOptions([
       ...options,
       {
         name: "",
         values: [],
       },
-    ])
-  }
+    ]);
+  };
 
-  const parseProduct = data => {
+  const parseProduct = (data) => {
     let parseOptions = [
       {
         name: "Default Option",
       },
-    ]
+    ];
 
     let parseVariants = [
       {
@@ -325,11 +322,11 @@ const NewProduct = ({ }) => {
         })),
         options: [{ value: "Default Variant" }],
       },
-    ]
+    ];
 
     if (hasVariants) {
-      parseOptions = options
-      parseVariants = variants.map(v => ({
+      parseOptions = options;
+      parseVariants = variants.map((v) => ({
         title: v.title,
         sku: v.sku || null,
         ean: v.ean || null,
@@ -338,22 +335,22 @@ const NewProduct = ({ }) => {
           currency_code,
           amount: Math.round(amount),
         })),
-        options: v.options.map(o => ({ value: o })),
-      }))
+        options: v.options.map((o) => ({ value: o })),
+      }));
     }
 
     const p = {
       images,
       title: data.title,
       description: data.description,
-      options: parseOptions.map(o => ({ title: o.name })),
+      options: parseOptions.map((o) => ({ title: o.name })),
       variants: parseVariants,
-    }
+    };
 
     if (collection && !_.isEmpty(collection)) {
-      const coll = collections.find(c => c.id === collection.value)
+      const coll = collections.find((c) => c.id === collection.value);
       if (coll) {
-        p.collection_id = coll.id
+        p.collection_id = coll.id;
       }
     }
 
@@ -361,91 +358,96 @@ const NewProduct = ({ }) => {
       if (type.__isNew__) {
         p.type = {
           value: type.label,
-        }
+        };
       } else {
         p.type = {
           value: type.label,
           id: type.value,
-        }
+        };
       }
     }
 
     if (tags && tags.length) {
-      p.tags = tags.map(t => ({ value: t }))
+      p.tags = tags.map((t) => ({ value: t }));
     }
 
-    return p
-  }
+    return p;
+  };
 
-  const onAddMore = data => {
-    const product = parseProduct(data)
+  const onAddMore = (data) => {
+    const product = parseProduct(data);
     Medusa.products.create(product).then(({ data }) => {
-      reset()
-      setPrices([])
-      setVariants([])
-      setOptions([])
-    })
-  }
+      reset();
+      setPrices([]);
+      setVariants([]);
+      setOptions([]);
+    });
+  };
 
-  const priceFormatter = value =>
-    value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  const priceFormatter = (value) =>
+    value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  const submit = async data => {
-    const product = parseProduct(data)
+  const submit = async (data) => {
+    const product = parseProduct(data);
 
     if (!variants.length && hasVariants) {
       toaster(
         `Missing variants. Consider using the simple product, if only one variant should exists`,
         "error"
-      )
-      return
+      );
+      return;
     }
 
     try {
-      const { data } = await Medusa.products.create(product)
-      navigate(`/a/products/${data.product.id}`)
+      const { data } = await Medusa.products.create(product);
+      navigate(`/a/products/${data.product.id}`);
     } catch (error) {
-      const errorData = error.response.data.message
-      toaster(`${errorData[0].message}`, "error")
+      const errorData = error.response.data.message;
+      toaster(`${errorData[0].message}`, "error");
     }
-  }
+  };
 
-  const onImageChange = e => {
+  const onImageChange = (e) => {
     Medusa.uploads.create(e.target.files).then(({ data }) => {
-      const uploaded = data.uploads.map(({ url }) => url)
-      setImages(images.concat(uploaded))
-    })
-  }
+      const uploaded = data.uploads.map(({ url }) => url);
+      setImages(images.concat(uploaded));
+    });
+  };
 
-  const handleImageDelete = url => {
-    Medusa.uploads.delete(url[0]).then(() => {
-      setImages(images.filter(im => im !== url))
-    })
-  }
+  const handleImageDelete = (url) => {
+    Medusa.uploads
+      .delete(url)
+      .then(() => {
+        setImages(images.filter((im) => im !== url));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const handleTypeChange = selectedOption => {
-    setSelectedType(selectedOption)
-  }
+  const handleTypeChange = (selectedOption) => {
+    setSelectedType(selectedOption);
+  };
 
-  const handleTagChange = newTags => {
-    setTags(newTags)
-  }
+  const handleTagChange = (newTags) => {
+    setTags(newTags);
+  };
 
-  const handleCollectionChange = selectedOption => {
-    setCollection(selectedOption)
-  }
+  const handleCollectionChange = (selectedOption) => {
+    setCollection(selectedOption);
+  };
 
   useEffect(() => {
     if (Object.keys(errors).length) {
-      const requiredErrors = Object.keys(errors).map(err => {
+      const requiredErrors = Object.keys(errors).map((err) => {
         if (errors[err].type === "required") {
-          return err
+          return err;
         }
-      })
+      });
 
-      toaster(`Missing info: ${requiredErrors.join(", ")}`, "error")
+      toaster(`Missing info: ${requiredErrors.join(", ")}`, "error");
     }
-  }, [errors])
+  }, [errors]);
 
   return (
     <Flex as="form" pb={6} onSubmit={handleSubmit(submit)} pt={5}>
@@ -488,7 +490,7 @@ const NewProduct = ({ }) => {
               placeholder="Select collection..."
               onChange={handleCollectionChange}
               options={
-                collections?.map(col => ({
+                collections?.map((col) => ({
                   value: col.id,
                   label: col.title,
                 })) || []
@@ -502,7 +504,7 @@ const NewProduct = ({ }) => {
               placeholder="Select type..."
               onChange={handleTypeChange}
               options={
-                types?.map(typ => ({
+                types?.map((typ) => ({
                   value: typ.value,
                   label: typ.value,
                 })) || []
@@ -515,7 +517,7 @@ const NewProduct = ({ }) => {
             <TagInput
               placeholder="Spring, summer..."
               values={tags}
-              onChange={values => handleTagChange(values)}
+              onChange={(values) => handleTagChange(values)}
             />
             {frequentTags && frequentTags.length ? (
               <Flex mt={1}>
@@ -523,7 +525,7 @@ const NewProduct = ({ }) => {
                   Frequently used tags:{" "}
                 </Text>
                 <Text fontSize="10px">
-                  {frequentTags.map(t => t.value).join(", ")}
+                  {frequentTags.map((t) => t.value).join(", ")}
                 </Text>
               </Flex>
             ) : null}
@@ -531,8 +533,8 @@ const NewProduct = ({ }) => {
               <Pill
                 width="50%"
                 onClick={() => {
-                  clearErrors()
-                  setHasVariants(false)
+                  clearErrors();
+                  setHasVariants(false);
                 }}
                 active={!hasVariants}
                 mr={4}
@@ -542,8 +544,8 @@ const NewProduct = ({ }) => {
               <Pill
                 width="50%"
                 onClick={() => {
-                  setHasVariants(true)
-                  clearErrors()
+                  setHasVariants(true);
+                  clearErrors();
                 }}
                 active={hasVariants}
               >
@@ -583,7 +585,7 @@ const NewProduct = ({ }) => {
                   <Box>
                     <Input
                       name={`options[${index}].name`}
-                      onChange={e => updateOptionName(e, index)}
+                      onChange={(e) => updateOptionName(e, index)}
                       label="Option title"
                       placeholder="Color"
                       required={true}
@@ -594,7 +596,7 @@ const NewProduct = ({ }) => {
                     <TagInput
                       placeholder="Blue, Green"
                       values={o.values}
-                      onChange={values => updateOptionValue(index, values)}
+                      onChange={(values) => updateOptionValue(index, values)}
                     />
                   </Box>
                   <Box>
@@ -618,7 +620,7 @@ const NewProduct = ({ }) => {
                 <Flex flexDirection="column" flexGrow="1">
                   <VariantGrid
                     variants={variants}
-                    onChange={vs => setVariants(vs)}
+                    onChange={(vs) => setVariants(vs)}
                   />
                 </Flex>
               </>
@@ -642,10 +644,10 @@ const NewProduct = ({ }) => {
                         currency={p.currency_code.toUpperCase()}
                         currencyOptions={currencyOptions}
                         value={p.amount}
-                        onCurrencySelected={currency =>
+                        onCurrencySelected={(currency) =>
                           handleCurrencySelected(index, currency)
                         }
-                        onChange={e => handlePriceChange(index, e)}
+                        onChange={(e) => handlePriceChange(index, e)}
                         label={index === 0 ? "Price" : ""}
                         removable={index !== 0}
                         onRemove={() => removePrice(index)}
@@ -703,7 +705,7 @@ const NewProduct = ({ }) => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default NewProduct
+export default NewProduct;

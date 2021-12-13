@@ -1,12 +1,13 @@
-import React from "react"
-import breakpoints from "./breakpoints"
-import buttons from "./buttons"
-import spacing from "./spacing"
-import shadows from "./shadows"
-import forms from "./forms"
-import { ThemeProvider as Provider } from "emotion-theming"
+import "../fonts/index.css";
 
-import "../fonts/index.css"
+import { ThemeProvider as Provider } from "@emotion/react";
+import React from "react";
+
+import breakpoints from "./breakpoints";
+import buttons from "./buttons";
+import forms from "./forms";
+import shadows from "./shadows";
+import spacing from "./spacing";
 
 export const theme = {
   colors: {
@@ -81,8 +82,8 @@ export const theme = {
   },
   forms,
   buttons,
-}
+};
 
 export const ThemeProvider = ({ children }) => (
   <Provider theme={theme}>{children}</Provider>
-)
+);
