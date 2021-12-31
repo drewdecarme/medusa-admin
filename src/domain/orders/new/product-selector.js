@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react"
-import { Text, Flex, Box } from "rebass"
-import { useForm, useFieldArray } from "react-hook-form"
+import React, { useEffect, useState } from "react"
+import { useFieldArray, useForm } from "react-hook-form"
+import { Box, Flex, Text } from "rebass"
 
-import Modal from "../../../components/modal"
-import Input from "../../../components/input"
 import Button from "../../../components/button"
-
+import Input from "../../../components/input"
+import Modal from "../../../components/modal"
+import MultiSelect from "../../../components/multi-select"
 import useMedusa from "../../../hooks/use-medusa"
-import { StyledMultiSelect } from "."
 
 const ProductSelector = ({
   onClick,
@@ -35,7 +34,7 @@ const ProductSelector = ({
           minHeight="400px"
           minWidth="500px"
         >
-          <StyledMultiSelect
+          <MultiSelect
             options={
               products &&
               products.map(el => ({

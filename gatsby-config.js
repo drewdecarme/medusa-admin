@@ -5,10 +5,8 @@ module.exports = {
     author: `@medusajs`,
   },
   flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    FAST_REFRESH: true,
     FAST_DEV: true,
-    DEV_SSR: true,
+    DETECT_NODE_MUTATIONS: true
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

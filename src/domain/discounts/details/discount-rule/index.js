@@ -1,14 +1,14 @@
-import React, { useState } from "react"
-import { Text, Flex } from "rebass"
-import { useForm } from "react-hook-form"
-import { Label } from "@rebass/forms"
 import styled from "@emotion/styled"
+import { Label } from "@rebass/forms"
 import _ from "lodash"
+import React, { useState } from "react"
+import { useForm } from "react-hook-form"
+import {MultiSelect} from "react-multi-select-component"
+import { Flex, Text } from "rebass"
 
-import Modal from "../../../../components/modal"
-import MultiSelect from "react-multi-select-component"
-import Input from "../../../../components/input"
 import Button from "../../../../components/button"
+import Input from "../../../../components/input"
+import Modal from "../../../../components/modal"
 import Typography from "../../../../components/typography"
 
 const StyledLabel = styled(Label)`

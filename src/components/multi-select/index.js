@@ -1,11 +1,12 @@
-import React from "react"
-import { Text, Flex } from "rebass"
-import { Label } from "@rebass/forms"
-import { default as ReactMultiSelect } from "react-multi-select-component"
 import styled from "@emotion/styled"
+import { Label } from "@rebass/forms"
+import React from "react"
+import { MultiSelect as ReactMultiSelectComponent } from "react-multi-select-component"
+import { Flex, Text } from "rebass"
+
 import Typography from "../typography"
 
-const StyledMultiSelect = styled(ReactMultiSelect)`
+const StyledMultiSelect = styled(ReactMultiSelectComponent)`
   ${Typography.Base}
 
   color: black;

@@ -1,63 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { Text, Flex, Box } from "rebass"
-import _ from "lodash"
-import { useForm } from "react-hook-form"
 import { Checkbox, Label } from "@rebass/forms"
-import styled from "@emotion/styled"
-import MultiSelect from "react-multi-select-component"
+import _ from "lodash"
 import { debounce } from "lodash"
+import React, { useCallback, useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { Box, Flex, Text } from "rebass"
 
-import Medusa from "../../../services/api"
 import Button from "../../../components/button"
-import Typography from "../../../components/typography"
-
-import useMedusa from "../../../hooks/use-medusa"
-import Modal from "../../../components/modal"
 import Input from "../../../components/input"
-import Items from "./components/items"
-import ShippingDetails from "./components/shipping-details"
-import Billing from "./components/billing-details"
-import Summary from "./components/summary"
+import Modal from "../../../components/modal"
 import { ReactSelect } from "../../../components/react-select"
 import Select from "../../../components/select"
+import useMedusa from "../../../hooks/use-medusa"
+import Medusa from "../../../services/api"
 import { extractOptionPrice, extractUnitPrice } from "../../../utils/prices"
 import { removeNullish } from "../../../utils/remove-nullish"
+import Billing from "./components/billing-details"
+import Items from "./components/items"
+import ShippingDetails from "./components/shipping-details"
+import Summary from "./components/summary"
 
-export const StyledMultiSelect = styled(MultiSelect)`
-  ${Typography.Base}
-
-  color: black;
-  background-color: white;
-
-  line-height: 1.22;
-
-  border: none;
-  outline: 0;
-
-  transition: all 0.2s ease;
-
-  border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-    rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-    rgba(0, 0, 0, 0) 0px 0px 0px 0px;
-
-  &:focus: {
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-      rgba(206, 208, 190, 0.36) 0px 0px 0px 4px,
-      rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px,
-      rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-      rgba(0, 0, 0, 0) 0px 0px 0px 0px;
-  }
-  &::placeholder: {
-    color: #a3acb9;
-  }
-
-  .go3433208811 {
-    border: none;
-    border-radius: 3px;
-  }
-`
 const defaultFormValues = {
   region: null,
   shipping: null,

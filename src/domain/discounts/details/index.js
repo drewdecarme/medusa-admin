@@ -1,23 +1,22 @@
-import React, { useState, useRef, useEffect } from "react"
-import { Text, Flex, Box, Image } from "rebass"
-import { navigate } from "gatsby"
-import ReactJson from "react-json-view"
 import styled from "@emotion/styled"
-import MultiSelect from "react-multi-select-component"
+import { Input } from "@rebass/forms"
+import { navigate } from "gatsby"
 import _ from "lodash"
+import React, { useEffect, useRef, useState } from "react"
+import ReactJson from "react-json-view"
+import {MultiSelect as ReactMultiSelect} from "react-multi-select-component"
+import { Box, Flex, Image, Text } from "rebass"
 
-import Card from "../../../components/card"
-import Spinner from "../../../components/spinner"
 import Badge from "../../../components/badge"
 import Button from "../../../components/button"
+import Card from "../../../components/card"
 import EditableInput from "../../../components/editable-input"
-
+import Spinner from "../../../components/spinner"
+import Typography from "../../../components/typography"
 import useMedusa from "../../../hooks/use-medusa"
 import DiscountRuleModal from "./discount-rule"
-import { Input } from "@rebass/forms"
-import Typography from "../../../components/typography"
 
-const StyledMultiSelect = styled(MultiSelect)`
+const StyledMultiSelect = styled(ReactMultiSelect)`
   ${Typography.Base}
 
   color: black;
