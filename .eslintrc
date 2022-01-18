@@ -4,7 +4,6 @@
   "rules": {
     "prettier/prettier": "error",
     "semi": "error",
-    "no-unused-expressions": "true"
+    "no-unused-expressions": "error"
   }
 }
-
